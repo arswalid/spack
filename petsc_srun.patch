@@ -1,0 +1,31 @@
+diff --git a/var/spack/repos/builtin/packages/petsc/package.py b/var/spack/repos/builtin/packages/petsc/package.py
+index 75646e4..8787e8e 100644
+--- a/var/spack/repos/builtin/packages/petsc/package.py
++++ b/var/spack/repos/builtin/packages/petsc/package.py
+@@ -338,7 +338,10 @@ def mpi_dependent_options(self):
+                 '--with-cc=%s' % self.spec['mpi'].mpicc,
+                 '--with-cxx=%s' % self.spec['mpi'].mpicxx,
+                 '--with-fc=%s' % self.spec['mpi'].mpifc,
++                '--with-mpiexec=srun'
+             ]
++            # yoder:
++            #compiler_opts += ['--with-mpiexex=srun']
+             if self.spec.satisfies('%intel'):
+                 # mpiifort needs some help to automatically link
+                 # all necessary run-time libraries
+@@ -545,9 +548,12 @@ def test(self):
+         env['PETSC_DIR'] = self.prefix
+         env['PETSC_ARCH'] = ''
+         if ('+mpi' in spec):
+-            runexe = Executable(join_path(spec['mpi'].prefix.bin,
+-                                          'mpiexec')).command
+-            runopt = ['-n', '4']
++#            runexe = Executable(join_path(spec['mpi'].prefix.bin,
++#                                          'mpiexec')).command
++#            runopt = ['-n', '4']
++             # yoder:
++             runexe = Executable('srun').command
++             runopt = ['--ntasks', '4']
+         else:
+             runexe = Executable(join_path(self.prefix,
+                                           'lib/petsc/bin/petsc-mpiexec.uni')).command

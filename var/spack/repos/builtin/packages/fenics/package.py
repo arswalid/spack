@@ -73,7 +73,8 @@ class Fenics(CMakePackage):
           sha256='1cc69e612df18feb5ebdc78cd902cfefda5ffc077735f0b67a1dcb1bf82e63c9',
           when='@2019.1.0.post0')
     patch('petsc_3_11.patch', when='@2018.1.0.post1')
-
+    patch('hdf5.patch', when='@2019.1.0.post0')
+    
     # enable extension support for fenics package
     extends('python', when='+python')
 

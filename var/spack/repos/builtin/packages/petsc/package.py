@@ -297,8 +297,8 @@ class Petsc(Package, CudaPackage, ROCmPackage):
     depends_on('mumps+mpi~int64~metis~parmetis+openmp', when='+mumps~metis+openmp')
     depends_on('mumps+mpi~int64+metis+parmetis+openmp', when='+mumps+metis+openmp')
     depends_on('scalapack', when='+mumps')
-    depends_on('trilinos@12.6.2:+mpi', when='@3.7.0:+trilinos+mpi')
-    depends_on('trilinos@develop+mpi', when='@main+trilinos+mpi')
+    depends_on('trilinos@12.6.2:12.18.1+mpi', when='@3.7.0:+trilinos+mpi')
+    depends_on('trilinos@12.6.2:12.18.1+mpi', when='@main+trilinos+mpi')
     depends_on('mkl', when='+mkl-pardiso')
     depends_on('fftw+mpi', when='+fftw+mpi')
     depends_on('suite-sparse', when='+suite-sparse')
@@ -350,7 +350,10 @@ class Petsc(Package, CudaPackage, ROCmPackage):
                 '--with-cc=%s' % self.spec['mpi'].mpicc,
                 '--with-cxx=%s' % self.spec['mpi'].mpicxx,
                 '--with-fc=%s' % self.spec['mpi'].mpifc,
+                '--with-mpiexec=srun'
             ]
+            # yoder:
+            #compiler_opts += ['--with-mpiexex=srun']
             if self.spec.satisfies('%intel'):
                 # mpiifort needs some help to automatically link
                 # all necessary run-time libraries
@@ -586,9 +589,12 @@ class Petsc(Package, CudaPackage, ROCmPackage):
         env['PETSC_DIR'] = self.prefix
         env['PETSC_ARCH'] = ''
         if ('+mpi' in spec):
-            runexe = Executable(join_path(spec['mpi'].prefix.bin,
-                                          'mpiexec')).command
-            runopt = ['-n', '4']
+#            runexe = Executable(join_path(spec['mpi'].prefix.bin,
+#                                          'mpiexec')).command
+#            runopt = ['-n', '4']
+             # yoder:
+             runexe = Executable('srun').command
+             runopt = ['--ntasks', '4']
         else:
             runexe = Executable(join_path(self.prefix,
                                           'lib/petsc/bin/petsc-mpiexec.uni')).command

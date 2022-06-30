@@ -139,7 +139,7 @@ class Paraview(CMakePackage, CudaPackage):
     depends_on('gl@3.2:', when='+opengl2')
     depends_on('gl@1.2:', when='~opengl2')
     depends_on('libxt', when='~osmesa platform=linux')
-    conflicts('+qt', when='+osmesa')
+    #conflicts('+qt', when='+osmesa')
 
     depends_on('bzip2')
     depends_on('double-conversion')
@@ -211,8 +211,14 @@ class Paraview(CMakePackage, CudaPackage):
 
     # Fix IOADIOS2 module to work with kits
     # https://gitlab.kitware.com/vtk/vtk/-/merge_requests/8653
-    patch('vtk-adios2-module-no-kit.patch', when='@5.8:5.10')
+    patch('vtk-adios2-module-no-kit.patch', when='@5.6:5.10')
+    
 
+    #patch('vtk-freetype-2.10.3-replace-FT_CALLBACK_DEF.patch', when='@5.6:5.10')
+    patch('vtk-freetype-2.10.3-provide-FT_CALLBACK_DEF.patch', when='@5.6:5.10')
+    
+    patch('ospray.patch', when='@5.6:5.10')
+    
     def url_for_version(self, version):
         _urlfmt  = 'http://www.paraview.org/files/v{0}/ParaView-v{1}{2}.tar.{3}'
         """Handle ParaView version-based custom URLs."""
@@ -321,7 +327,9 @@ class Paraview(CMakePackage, CudaPackage):
             '-DVTK_USE_X:BOOL=%s' % nvariant_bool('+osmesa'),
             '-DPARAVIEW_INSTALL_DEVELOPMENT_FILES:BOOL=%s' % includes,
             '-DBUILD_TESTING:BOOL=OFF',
-            '-DOpenGL_GL_PREFERENCE:STRING=LEGACY']
+            '-DOpenGL_GL_PREFERENCE:STRING=LEGACY',
+	    '-DPARAVIEW_ENABLE_RAYTRACING=ON',
+	    '-Dospray_DIR:STRING=/projects/hpcapps/warsalan/ospray/build/install/ospray/lib64/cmake/ospray-2.9.0']
 
         if spec.satisfies('@5.10:'):
             cmake_args.extend([

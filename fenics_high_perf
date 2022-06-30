@@ -1,0 +1,12 @@
+spack install fenics%gcc@8.4.0 \
+^/l3dgouwijowiu6tyd6mdo67woou57zva \
+^hdf5+mpi\
+^petsc+mpi+int64 \
+^hypre+mpi+int64 \
+^py-petsc4py+mpi \
+^scotch+mpi+int64 \
+^arpack-ng+mpi \
+^metis+int64 \
+^parmetis+int64 \
+^slepc~arpack \
+^superlu-dist+int64  
