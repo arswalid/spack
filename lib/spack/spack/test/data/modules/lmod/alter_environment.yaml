@@ -10,7 +10,7 @@ lmod:
   all:
     autoload: none
     filter:
-      environment_blacklist:
+      exclude_environment:
         - CMAKE_PREFIX_PATH
     environment:
       set:

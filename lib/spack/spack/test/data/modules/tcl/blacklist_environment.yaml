@@ -1,10 +1,12 @@
+# DEPRECATED: remove this in v0.20
+# See `alter_environment.yaml` for the new syntax
 enable:
   - tcl
 tcl:
   all:
     autoload: none
     filter:
-      exclude_environment:
+      environment_blacklist:
         - CMAKE_PREFIX_PATH
     environment:
       set:

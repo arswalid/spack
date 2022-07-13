@@ -1,10 +1,18 @@
+# DEPRECATED: remove this in v0.20
+# See `alter_environment.yaml` for the new syntax
 enable:
-  - tcl
-tcl:
+  - lmod
+lmod:
+  core_compilers:
+    - 'clang@3.3'
+
+  hierarchy:
+    - mpi
+
   all:
     autoload: none
     filter:
-      exclude_environment:
+      environment_blacklist:
         - CMAKE_PREFIX_PATH
     environment:
       set:
@@ -14,7 +22,6 @@ tcl:
     environment:
       set:
         FOO: 'foo'
-        OMPI_MCA_mpi_leave_pinned: '1'
       unset:
         - BAR
 
