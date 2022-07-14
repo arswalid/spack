@@ -11,6 +11,7 @@ import llnl.util.tty as tty
 
 import spack.build_environment
 import spack.util.executable
+from spack.package import *
 
 
 class LlvmDoe(CMakePackage, CudaPackage):
@@ -32,7 +33,7 @@ class LlvmDoe(CMakePackage, CudaPackage):
     version('doe', branch='doe', preferred=True)
     version('upstream', branch='llvm.org/main')
     version('bolt', branch='bolt/main')
-    version('clacc', branch='clacc/master')
+    version('develop.clacc', branch='clacc/main')
     version('pragma-clang-loop', branch='sollve/pragma-clang-loop')
     version('pragma-omp-tile', branch='sollve/pragma-omp-tile')
     version('13.0.0', branch='llvm.org/llvmorg-13.0.0')
